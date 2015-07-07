@@ -1,0 +1,5 @@
+dependencies:
+  - git@github.com:ministryofjustice/docker-formula.git
+
+entry:
+ - opg-docker-monitoring
