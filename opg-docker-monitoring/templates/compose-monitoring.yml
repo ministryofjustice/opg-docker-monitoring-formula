@@ -1,0 +1,97 @@
+kibana:
+  image: marcbachmann/kibana4:latest
+  environment:
+    ELASTICSEARCH: http://elasticsearch:9200
+  ports:
+    - 8001:5601
+  links:
+    - elasticsearch
+  env_file: ./kibana.env
+
+
+# data on volume
+elasticsearch:
+  image: elasticsearch:latest
+  ports:
+    - 9200:9200
+    - 9300:9300
+  env_file: ./elasticsearch.env
+
+
+# user/pass: admin/admin
+grafana:
+  image: registry.service.dsd.io/opguk/grafana:latest
+  ports:
+    - 8002:3000
+  links:
+    - graphite
+  env_file: ./grafana.env
+
+
+logstash:
+  image: registry.service.dsd.io/opguk/logstash:latest
+  links:
+    - redis
+    - elasticsearch
+    - graphite
+  env_file: ./logstash.env
+
+
+redis:
+  image: redis:latest
+  ports:
+    - 6379:6379
+  env_file: ./redis.env
+
+
+# data on volume
+graphite:
+  image: registry.service.dsd.io/opguk/graphite-statsd:latest
+  ports:
+    - 8003:80
+    - 2003:2003
+    - 2003:2003/udp
+    - 8125:8125/udp
+  env_file: ./graphite.env
+
+
+rabbitmq:
+  image: registry.service.dsd.io/opguk/rabbitmq:latest
+  ports:
+    - 5672:5672
+  env_file: ./rabbitmq.env
+
+
+sensuserver:
+  image: registry.service.dsd.io/opguk/sensu-server:latest
+  links:
+    - redis
+    - rabbitmq
+  env_file: ./sensu.env
+
+
+sensuapi:
+  image: registry.service.dsd.io/opguk/sensu-api:latest
+  links:
+    - redis
+    - rabbitmq
+  env_file: ./sensu.env
+
+
+uchiwa:
+  image: registry.service.dsd.io/opguk/uchiwa:latest
+  links:
+    - sensuapi
+    - sensuserver
+  ports:
+    - 8004:3000
+  env_file: ./uchiwa.env
+
+
+monitoringproxy:
+  image: registry.service.dsd.io/opguk/monitoring-proxy:latest
+  links:
+    - redis
+    - graphite
+  env_file: ./monitoringproxy.env
+

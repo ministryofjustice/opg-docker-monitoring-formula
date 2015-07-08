@@ -1,4 +1,4 @@
-{% from "map.jinja" import monitoring with context %}
+{% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
 
 include:
   - .docker
