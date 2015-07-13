@@ -1,0 +1,4 @@
+sensuclient:
+  image: registry.service.dsd.io/opguk/sensu-client:latest
+  env_file: ./sensuclient.env
+

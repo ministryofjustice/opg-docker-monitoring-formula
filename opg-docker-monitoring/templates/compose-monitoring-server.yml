@@ -88,10 +88,4 @@ uchiwa:
   env_file: ./uchiwa.env
 
 
-monitoringproxy:
-  image: registry.service.dsd.io/opguk/monitoring-proxy:latest
-  links:
-    - redis
-    - graphite
-  env_file: ./monitoringproxy.env
 

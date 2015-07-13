@@ -1,0 +1,4 @@
+monitoringproxy:
+  image: registry.service.dsd.io/opguk/monitoring-proxy:latest
+  env_file: ./monitoringproxy.env
+
