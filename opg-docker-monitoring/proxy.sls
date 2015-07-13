@@ -4,7 +4,7 @@ include:
   - .docker
 
 
-docker-compose-project-dir:
+monitoring-proxy-project-dir:
   file.directory:
     - name: /etc/docker-compose/monitoring-proxy
     - user: root
@@ -14,7 +14,7 @@ docker-compose-project-dir:
       - sls: docker-compose
 
 
-docker-compose-yml:
+monitoring-proxy-docker-compose-yml:
   file.managed:
     - name: /etc/docker-compose/monitoring-proxy/docker-compose.yml
     - source: salt://opg-docker-monitoring/templates/compose-monitoring-proxy.yml
@@ -26,7 +26,7 @@ docker-compose-yml:
       - sls: docker-compose
 
 
-docker-compose-up:
+monitoring-proxy-docker-compose-up:
   cmd.run:
     - name: docker-compose -p monitoringproxy up -d
     - cwd: /etc/docker-compose/monitoring-proxy
@@ -36,7 +36,7 @@ docker-compose-up:
     - watch:
       - file: /etc/docker-compose/*
     - require:
-      - file: docker-compose-yml
+      - file: monitoring-proxy-docker-compose-yml
 
 
 {% for service in salt['pillar.get']('monitoring:proxy') %}
@@ -54,7 +54,7 @@ docker-compose-up:
         service: {{service}}
     - require:
       - sls: docker-compose
-      - file: docker-compose-project-dir
+      - file: monitoring-proxy-project-dir
 
 {% endif %}
 {% endfor %}

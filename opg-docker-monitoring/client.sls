@@ -4,7 +4,7 @@ include:
   - .docker
 
 
-docker-compose-project-dir:
+monitoring-client-project-dir:
   file.directory:
     - name: /etc/docker-compose/monitoring-client
     - user: root
@@ -14,7 +14,7 @@ docker-compose-project-dir:
       - sls: docker-compose
 
 
-docker-compose-yml:
+monitoring-client-docker-compose-yml:
   file.managed:
     - name: /etc/docker-compose/monitoring-client/docker-compose.yml
     - source: salt://opg-docker-monitoring/templates/compose-monitoring-client.yml
@@ -26,7 +26,7 @@ docker-compose-yml:
       - sls: docker-compose
 
 
-docker-compose-up:
+monitoring-client-docker-compose-up:
   cmd.run:
     - name: docker-compose -p monitoringclient up -d
     - cwd: /etc/docker-compose/monitoring-client
@@ -36,7 +36,7 @@ docker-compose-up:
     - watch:
       - file: /etc/docker-compose/*
     - require:
-      - file: docker-compose-yml
+      - file: monitoring-client-docker-compose-yml
 
 
 {% for service in salt['pillar.get']('monitoring:client') %}
@@ -54,7 +54,7 @@ docker-compose-up:
         service: {{service}}
     - require:
       - sls: docker-compose
-      - file: docker-compose-project-dir
+      - file: monitoring-client-project-dir
 
 {% endif %}
 {% endfor %}
