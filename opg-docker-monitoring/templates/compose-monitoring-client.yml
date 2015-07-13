@@ -1,4 +1,7 @@
 sensuclient:
   image: registry.service.dsd.io/opguk/sensu-client:latest
-  env_file: ./sensuclient.env
+  env_file:
+    - ./sensuclient.env
+    - ./checksbase.env
+    - ./checksrole.env
 
