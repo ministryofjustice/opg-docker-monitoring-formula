@@ -1,7 +1,5 @@
 kibana:
   image: marcbachmann/kibana4:latest
-  environment:
-    ELASTICSEARCH: http://elasticsearch:9200
   ports:
     - 8001:5601
   links:
