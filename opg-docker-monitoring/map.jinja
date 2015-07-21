@@ -9,21 +9,7 @@
       },
       'graphite': {
         'data_dir': '/data/graphite'
-      },
-      'rabbitmq': {
-        'env': {
-          'RABBITMQ_TCP_LISTENERS': '5672',
-          'RABBITMQ_DEFAULT_VHOST': '/sensu',
-          'RABBITMQ_DEFAULT_USER': 'sensu',
-          'RABBITMQ_DEFAULT_PASS': 'sensu'
-        }
       }
-    },
-    'client': {
-        'FOO': 'BAR'
-    },
-    'proxy': {
-        'FOO': 'BAR'
     }
   }
 }, merge=salt['pillar.get']('monitoring'), default='Ubuntu') %}
