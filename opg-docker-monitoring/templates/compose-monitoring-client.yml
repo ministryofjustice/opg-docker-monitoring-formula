@@ -2,6 +2,9 @@ sensuclient:
   image: registry.service.dsd.io/opguk/sensu-client:latest
   env_file:
     - ./sensuclient.env
+{% if salt['pillar.get']('monitoring:client:checksbase:env') %}
     - ./checksbase.env
+{% endif %}
+{% if salt['pillar.get']('monitoring:client:checksrole:env') %}
     - ./checksrole.env
-
+{% endif %}
