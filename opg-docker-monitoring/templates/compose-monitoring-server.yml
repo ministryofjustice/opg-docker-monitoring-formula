@@ -1,3 +1,5 @@
+{% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
+
 kibana:
   image: marcbachmann/kibana4:latest
   ports:
@@ -9,11 +11,13 @@ kibana:
 
 # data on volume
 elasticsearch:
-  image: elasticsearch:latest
+  image: registry.service.dsd.io/opguk/elasticsearch:latest
   ports:
     - 9200:9200
     - 9300:9300
   env_file: ./elasticsearch.env
+  volumes:
+    - {{ monitoring.server.elasticsearch.data_dir }}:/usr/share/elasticsearch/data
 
 
 # user/pass: admin/admin
@@ -24,6 +28,8 @@ grafana:
   links:
     - graphite
   env_file: ./grafana.env
+  volumes:
+    - {{ monitoring.server.grafana.data_dir }}:/usr/share/grafana/data
 
 
 logstash:
@@ -40,6 +46,7 @@ redis:
   ports:
     - 6379:6379
   env_file: ./redis.env
+  entrypoint: ["/entrypoint.sh","redis-server","--maxmemory","100mb","--maxmemory-policy","allkeys-lru"]
 
 
 # data on volume
@@ -50,6 +57,8 @@ graphite:
     - 2003:2003
     - 2003:2003/udp
   env_file: ./graphite.env
+  volumes:
+    - {{ monitoring.server.graphite.data_dir }}:/opt/graphite/storage
 
 
 rabbitmq:
