@@ -41,21 +41,21 @@ monitoring-server-docker-compose-up:
 
 grafana-data-dir:
   file.directory:
-    - name: {{ monitoring.grafana.data_dir }}
+    - name: {{ monitoring.server.grafana.data_dir }}
     - mode: 0777
     - makedirs: True
 
 
 graphite-data-dir:
   file.directory:
-    - name: {{ monitoring.graphite.data_dir }}
+    - name: {{ monitoring.server.graphite.data_dir }}
     - mode: 0777
     - makedirs: True
 
 
 elasticsearch-data-dir:
   file.directory:
-    - name: {{ monitoring.elasticsearch.data_dir }}
+    - name: {{ monitoring.server.elasticsearch.data_dir }}
     - mode: 0777
     - makedirs: True
 
