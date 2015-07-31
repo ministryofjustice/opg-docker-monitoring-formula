@@ -3,6 +3,7 @@
 
 include:
   - .docker
+  - .crontab
 
 
 monitoring-server-project-dir:
@@ -19,6 +20,18 @@ monitoring-server-docker-compose-yml:
   file.managed:
     - name: /etc/docker-compose/monitoring-server/docker-compose.yml
     - source: salt://opg-docker-monitoring/templates/compose-monitoring-server.yml
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - sls: docker-compose
+
+
+monitoring-server-docker-adhoc-yml:
+  file.managed:
+    - name: /etc/docker-compose/monitoring-server/docker-compose-adhoc.yml
+    - source: salt://opg-docker-monitoring/templates/compose-monitoring-adhoc.yml
     - template: jinja
     - user: root
     - group: root
