@@ -2,7 +2,10 @@
   'Ubuntu': {
     'server': {
       'elasticsearch': {
-        'data_dir': '/data/elasticsearch'
+        'data_dir': '/data/elasticsearch',
+        'curator': {
+          'enabled': False
+        }
       },
       'grafana': {
         'data_dir': '/data/grafana'
