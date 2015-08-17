@@ -40,15 +40,14 @@ monitoring-server-docker-adhoc-yml:
       - sls: docker-compose
 
 
-monitoring-server-docker-compose-up:
-  cmd.run:
-    - name: docker-compose -p monitoringserver up -d
-    - cwd: /etc/docker-compose/monitoring-server
-    - shell: /bin/bash
+docker-compose-up-monitoringserver:
+  docker_compose.up:
+    - project: monitoringserver
+    - config: /etc/docker-compose/monitoring-server/docker-compose.yml
     - env:
       - HOME: /root
     - watch:
-      - file: /etc/docker-compose/*
+      - file: /etc/docker-compose/monitoring-server/*
     - require:
       - file: monitoring-server-docker-compose-yml
       - file: grafana-data-dir

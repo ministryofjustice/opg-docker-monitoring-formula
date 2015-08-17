@@ -10,8 +10,6 @@ monitoring-client-project-dir:
     - user: root
     - group: root
     - mode: 0755
-    - require:
-      - sls: docker-compose
 
 
 monitoring-client-docker-compose-yml:
@@ -22,21 +20,16 @@ monitoring-client-docker-compose-yml:
     - user: root
     - group: root
     - mode: 644
-    - require:
-      - sls: docker-compose
 
 
-monitoring-client-docker-compose-up:
-  cmd.run:
-    - name: docker-compose -p monitoringclient up -d
-    - cwd: /etc/docker-compose/monitoring-client
-    - shell: /bin/bash
+docker-compose-up-monitoringclient:
+  docker_compose.up:
+    - project: monitoringclient
+    - config: /etc/docker-compose/monitoring-client/docker-compose.yml
     - env:
       - HOME: /root
     - watch:
-      - file: /etc/docker-compose/*
-    - require:
-      - file: monitoring-client-docker-compose-yml
+      - file: /etc/docker-compose/monitoring-client/*
 
 
 {% for service in salt['pillar.get']('monitoring:client') %}
@@ -53,7 +46,6 @@ monitoring-client-docker-compose-up:
         project: 'client'
         service: {{service}}
     - require:
-      - sls: docker-compose
       - file: monitoring-client-project-dir
 
 {% endif %}
