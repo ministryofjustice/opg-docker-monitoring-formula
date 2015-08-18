@@ -1,7 +1,8 @@
 {% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
 
+
 kibana:
-  image: marcbachmann/kibana4:latest
+  image: registry.service.dsd.io/opguk/kibana:{{monitoring.version.opg_docker}}
   ports:
     - 8001:5601
   links:
@@ -11,7 +12,7 @@ kibana:
 
 # data on volume
 elasticsearch:
-  image: registry.service.dsd.io/opguk/elasticsearch:latest
+  image: registry.service.dsd.io/opguk/elasticsearch:{{monitoring.version.opg_docker}}
   ports:
     - 9200:9200
     - 9300:9300
@@ -22,7 +23,7 @@ elasticsearch:
 
 # user/pass: admin/admin
 grafana:
-  image: registry.service.dsd.io/opguk/grafana:latest
+  image: registry.service.dsd.io/opguk/grafana:{{monitoring.version.opg_docker_monitoring}}
   ports:
     - 8002:3000
   links:
@@ -33,7 +34,7 @@ grafana:
 
 
 logstash:
-  image: registry.service.dsd.io/opguk/logstash:latest
+  image: registry.service.dsd.io/opguk/logstash:{{monitoring.version.opg_docker_monitoring}}
   links:
     - redis
     - elasticsearch
@@ -51,7 +52,7 @@ redis:
 
 # data on volume
 graphite:
-  image: registry.service.dsd.io/opguk/graphite-statsd:latest
+  image: registry.service.dsd.io/opguk/graphite-statsd:{{monitoring.version.opg_docker_monitoring}}
   ports:
     - 8003:80
     - 2003:2003
@@ -62,14 +63,14 @@ graphite:
 
 
 rabbitmq:
-  image: registry.service.dsd.io/opguk/rabbitmq:latest
+  image: registry.service.dsd.io/opguk/rabbitmq:{{monitoring.version.opg_docker}}
   ports:
     - 5672:5672
   env_file: ./rabbitmq.env
 
 
 sensuserver:
-  image: registry.service.dsd.io/opguk/sensu-server:latest
+  image: registry.service.dsd.io/opguk/sensu-server:{{monitoring.version.opg_docker_monitoring}}
   links:
     - redis
     - rabbitmq
@@ -77,7 +78,7 @@ sensuserver:
 
 
 sensuapi:
-  image: registry.service.dsd.io/opguk/sensu-api:latest
+  image: registry.service.dsd.io/opguk/sensu-api:{{monitoring.version.opg_docker_monitoring}}
   links:
     - redis
     - rabbitmq
@@ -85,7 +86,7 @@ sensuapi:
 
 
 uchiwa:
-  image: registry.service.dsd.io/opguk/uchiwa:latest
+  image: registry.service.dsd.io/opguk/uchiwa:{{monitoring.version.opg_docker_monitoring}}
   links:
     - sensuapi
     - sensuserver

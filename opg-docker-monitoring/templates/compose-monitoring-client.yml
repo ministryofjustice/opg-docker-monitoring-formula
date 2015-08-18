@@ -1,5 +1,7 @@
+{% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
+
 sensuclient:
-  image: registry.service.dsd.io/opguk/sensu-client:latest
+  image: registry.service.dsd.io/opguk/sensu-client:{{monitoring.version.opg_docker_monitoring}}
   env_file:
     - ./sensuclient.env
 {% if salt['pillar.get']('monitoring:client:checksbase:env') %}
