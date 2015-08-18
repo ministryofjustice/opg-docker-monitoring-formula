@@ -1,7 +1,8 @@
 {% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
 
+
 elasticcurator:
-  image: registry.service.dsd.io/opguk/elasticsearch:latest
+  image: registry.service.dsd.io/opguk/elasticsearch:{{monitoring.version.opg_docker}}
   external_links:
     - monitoringserver_elasticsearch_1:elasticsearch
   env_file: ./elasticsearch.env
