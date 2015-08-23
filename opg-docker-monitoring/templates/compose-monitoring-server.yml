@@ -70,6 +70,7 @@ redis:
 # data on volume
 graphite:
   image: registry.service.dsd.io/opguk/graphite-statsd:{{monitoring.version.opg_docker_monitoring}}
+  ports:
     - 2003:2003
     - 2003:2003/udp
   env_file: ./graphite.env
