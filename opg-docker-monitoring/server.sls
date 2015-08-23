@@ -11,8 +11,6 @@ monitoring-server-project-dir:
     - user: root
     - group: root
     - mode: 0755
-    - require:
-      - sls: docker-compose
 
 
 monitoring-server-docker-compose-yml:
@@ -23,8 +21,6 @@ monitoring-server-docker-compose-yml:
     - user: root
     - group: root
     - mode: 644
-    - require:
-      - sls: docker-compose
 
 
 monitoring-server-docker-adhoc-yml:
@@ -35,8 +31,6 @@ monitoring-server-docker-adhoc-yml:
     - user: root
     - group: root
     - mode: 644
-    - require:
-      - sls: docker-compose
 
 
 docker-compose-up-monitoringserver:
@@ -89,7 +83,6 @@ elasticsearch-data-dir:
         project: 'server'
         service: {{service}}
     - require:
-      - sls: docker-compose
       - file: monitoring-server-project-dir
 
 {% endif %}
