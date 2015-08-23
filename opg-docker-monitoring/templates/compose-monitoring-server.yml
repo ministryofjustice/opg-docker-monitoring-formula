@@ -1,10 +1,29 @@
 {% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
 
+router:
+  image: registry.service.dsd.io/opguk/nginx-router:0.1.58
+  ports:
+    - 80:80
+    - 443:443
+  links:
+    - kibana
+    - grafana
+    - graphite
+    - uchiwa
+  environment:
+    - OPG_NGINX_SSL_FORCE_REDIRECT=1
+    - OPG_NGINX_ROUTER_00_VHOST=kibana.*
+    - OPG_NGINX_ROUTER_00_TARGET=http://kibana:5601
+    - OPG_NGINX_ROUTER_01_VHOST=grafana.*
+    - OPG_NGINX_ROUTER_01_TARGET=http://grafana:3000
+    - OPG_NGINX_ROUTER_02_VHOST=graphite.*
+    - OPG_NGINX_ROUTER_02_TARGET=http://graphite
+    - OPG_NGINX_ROUTER_03_VHOST=sensu.*
+    - OPG_NGINX_ROUTER_03_TARGET=http://uchiwa:3000
+
 
 kibana:
   image: registry.service.dsd.io/opguk/kibana:{{monitoring.version.opg_docker}}
-  ports:
-    - 8001:5601
   links:
     - elasticsearch
   env_file: ./kibana.env
@@ -24,8 +43,6 @@ elasticsearch:
 # user/pass: admin/admin
 grafana:
   image: registry.service.dsd.io/opguk/grafana:{{monitoring.version.opg_docker_monitoring}}
-  ports:
-    - 8002:3000
   links:
     - graphite
   env_file: ./grafana.env
@@ -53,8 +70,6 @@ redis:
 # data on volume
 graphite:
   image: registry.service.dsd.io/opguk/graphite-statsd:{{monitoring.version.opg_docker_monitoring}}
-  ports:
-    - 8003:80
     - 2003:2003
     - 2003:2003/udp
   env_file: ./graphite.env
@@ -90,8 +105,6 @@ uchiwa:
   links:
     - sensuapi
     - sensuserver
-  ports:
-    - 8004:3000
   env_file: ./uchiwa.env
 
 

@@ -1,5 +1,4 @@
 {% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
-{% from "opg-docker-monitoring/lib.sls" import vhost_port with context %}
 
 include:
   - .docker
@@ -74,12 +73,6 @@ elasticsearch-data-dir:
     - name: {{ monitoring.server.elasticsearch.data_dir }}
     - mode: 0777
     - makedirs: True
-
-
-{{ vhost_port('kibana',   8001, False, True) }}
-{{ vhost_port('grafana',  8002, False, False) }}
-{{ vhost_port('graphite', 8003, False, False) }}
-{{ vhost_port('sensu',    8004, False, False) }}
 
 
 {% for service in salt['pillar.get']('monitoring:server') %}
