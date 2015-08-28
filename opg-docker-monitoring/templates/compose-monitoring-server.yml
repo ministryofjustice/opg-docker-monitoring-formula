@@ -73,6 +73,7 @@ graphite:
   ports:
     - 2003:2003
     - 2003:2003/udp
+    - 8003:80
   env_file: ./graphite.env
   volumes:
     - {{ monitoring.server.graphite.data_dir }}:/opt/graphite/storage
