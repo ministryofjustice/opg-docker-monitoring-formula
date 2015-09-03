@@ -91,6 +91,7 @@ sensuserver:
   links:
     - redis
     - rabbitmq
+    - sensuapi
   env_file: ./sensu.env
 
 
