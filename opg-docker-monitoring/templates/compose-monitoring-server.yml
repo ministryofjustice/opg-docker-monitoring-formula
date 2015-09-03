@@ -72,6 +72,7 @@ rabbitmq:
 sensuserver:
   image: registry.service.dsd.io/opguk/sensu-server:{{monitoring.version.opg_docker_monitoring}}
   links:
+    - sensuapi
     - redis
     - rabbitmq
   env_file: ./sensu.env
