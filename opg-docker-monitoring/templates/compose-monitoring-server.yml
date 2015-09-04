@@ -52,6 +52,9 @@ grafana:
 
 logstash:
   image: registry.service.dsd.io/opguk/logstash:{{monitoring.version.opg_docker_monitoring}}
+  ports:
+    - 2514:2514/udp
+    - 2514:2514
   links:
     - redis
     - elasticsearch
