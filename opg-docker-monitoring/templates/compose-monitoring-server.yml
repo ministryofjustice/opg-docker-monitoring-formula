@@ -2,6 +2,7 @@
 
 router:
   image: registry.service.dsd.io/opguk/nginx-router:0.1.58
+  log_driver: syslog
   ports:
     - 80:80
     - 443:443
@@ -24,6 +25,7 @@ router:
 
 kibana:
   image: registry.service.dsd.io/opguk/kibana:{{monitoring.version.opg_docker}}
+  log_driver: syslog
   links:
     - elasticsearch
   env_file: ./kibana.env
@@ -32,6 +34,7 @@ kibana:
 # data on volume
 elasticsearch:
   image: registry.service.dsd.io/opguk/elasticsearch:{{monitoring.version.opg_docker}}
+  log_driver: syslog
   ports:
     - 9200:9200
     - 9300:9300
@@ -43,6 +46,7 @@ elasticsearch:
 # user/pass: admin/admin
 grafana:
   image: registry.service.dsd.io/opguk/grafana:{{monitoring.version.opg_docker_monitoring}}
+  log_driver: syslog
   links:
     - graphite
   env_file: ./grafana.env
@@ -52,6 +56,7 @@ grafana:
 
 logstash:
   image: registry.service.dsd.io/opguk/logstash:{{monitoring.version.opg_docker_monitoring}}
+  log_driver: syslog
   ports:
     - 2514:2514/udp
     - 2514:2514
@@ -64,6 +69,7 @@ logstash:
 
 redis:
   image: redis:latest
+  log_driver: syslog
   ports:
     - 6379:6379
   env_file: ./redis.env
@@ -73,6 +79,7 @@ redis:
 # data on volume
 graphite:
   image: registry.service.dsd.io/opguk/graphite-statsd:{{monitoring.version.opg_docker_monitoring}}
+  log_driver: syslog
   ports:
     - 2003:2003
     - 2003:2003/udp
@@ -84,6 +91,7 @@ graphite:
 
 rabbitmq:
   image: registry.service.dsd.io/opguk/rabbitmq:{{monitoring.version.opg_docker}}
+  log_driver: syslog
   ports:
     - 5672:5672
   env_file: ./rabbitmq.env
@@ -91,6 +99,7 @@ rabbitmq:
 
 sensuserver:
   image: registry.service.dsd.io/opguk/sensu-server:{{monitoring.version.opg_docker_monitoring}}
+  log_driver: syslog
   links:
     - redis
     - rabbitmq
@@ -100,6 +109,7 @@ sensuserver:
 
 sensuapi:
   image: registry.service.dsd.io/opguk/sensu-api:{{monitoring.version.opg_docker_monitoring}}
+  log_driver: syslog
   links:
     - redis
     - rabbitmq
@@ -108,6 +118,7 @@ sensuapi:
 
 uchiwa:
   image: registry.service.dsd.io/opguk/uchiwa:{{monitoring.version.opg_docker_monitoring}}
+  log_driver: syslog
   links:
     - sensuapi
     - sensuserver

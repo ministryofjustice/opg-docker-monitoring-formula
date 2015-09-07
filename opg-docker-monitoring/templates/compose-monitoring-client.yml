@@ -2,6 +2,7 @@
 
 sensuclient:
   image: registry.service.dsd.io/opguk/sensu-client:{{monitoring.version.opg_docker_monitoring}}
+  log_driver: syslog
   env_file:
     - ./sensuclient.env
 {% if salt['pillar.get']('monitoring:client:checksbase:env') %}
