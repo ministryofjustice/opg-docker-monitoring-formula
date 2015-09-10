@@ -57,6 +57,7 @@ graphite:
     - 8003:80
     - 2003:2003
     - 2003:2003/udp
+    - 8125:8125/udp
   env_file: ./graphite.env
   volumes:
     - {{ monitoring.server.graphite.data_dir }}:/opt/graphite/storage
