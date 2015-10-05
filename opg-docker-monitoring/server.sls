@@ -46,6 +46,8 @@ docker-compose-up-monitoringserver:
       - file: grafana-data-dir
       - file: graphite-data-dir
       - file: elasticsearch-data-dir
+    - watch_in:
+      - cmd: flush_monitoring_udp_conntrack
 
 
 grafana-data-dir:
@@ -88,3 +90,9 @@ elasticsearch-data-dir:
 {% endif %}
 {% endfor %}
 
+
+flush_monitoring_udp_conntrack:
+  cmd.wait:
+    - name: conntrack -D -p udp
+    - require:
+      - pkg: conntrack
