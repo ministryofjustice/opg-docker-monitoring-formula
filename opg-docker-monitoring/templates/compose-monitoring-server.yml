@@ -11,7 +11,6 @@ router:
     - graphite
     - uchiwa
   environment:
-    - OPG_NGINX_SSL_FORCE_REDIRECT=1
     - OPG_NGINX_ROUTER_00_VHOST=kibana.* ~^kibana-
     - OPG_NGINX_ROUTER_00_TARGET=http://kibana:5601
     - OPG_NGINX_ROUTER_01_VHOST=grafana.* ~^grafana-
