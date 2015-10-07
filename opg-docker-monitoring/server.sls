@@ -94,5 +94,3 @@ elasticsearch-data-dir:
 flush_monitoring_udp_conntrack:
   cmd.wait:
     - name: conntrack -D -p udp
-    - require:
-      - pkg: conntrack
