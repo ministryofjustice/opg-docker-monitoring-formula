@@ -1,7 +1,7 @@
 {% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
 
 router:
-  image: registry.service.dsd.io/opguk/nginx-router:0.1.82
+  image: registry.service.dsd.io/opguk/nginx-router:0.1.86
   ports:
     - 80:80
     - 443:443
