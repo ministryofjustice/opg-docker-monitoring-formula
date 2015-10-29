@@ -1,0 +1,26 @@
+{% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          docker-compose
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 6
+# Short-Description: Monitoring Server
+# Description:       Start/stop monitoring server docker stack
+### END INIT INFO
+
+
+case "$1" in
+  start)
+    /usr/local/bin/docker-compose -p monitoringserver -f /etc/docker-compose/monitoring-server/docker-compose.yml up -d
+    ;;
+  stop)
+    /usr/local/bin/docker-compose -p monitoringserver -f /etc/docker-compose/monitoring-server/docker-compose.yml stop
+    /usr/local/bin/docker-compose -p monitoringserver -f /etc/docker-compose/monitoring-server/docker-compose.yml kill
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+esac

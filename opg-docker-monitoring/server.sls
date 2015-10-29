@@ -39,6 +39,18 @@ monitoring-server-docker-adhoc-yml:
       - sls: docker-compose
 
 
+monitoring-server-init:
+  file.managed:
+    - name: /etc/init.d/docker-compose-monitoring-server
+    - source: salt://opg-docker-monitoring/templates/compose-monitoring-server-init.yml
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 755
+    - require:
+      - sls: docker-compose
+
+
 monitoring-server-docker-compose-up:
   cmd.run:
     - name: docker-compose -p monitoringserver up -d
@@ -74,6 +86,13 @@ elasticsearch-data-dir:
     - name: {{ monitoring.server.elasticsearch.data_dir }}
     - mode: 0777
     - makedirs: True
+
+
+docker-compose-monitoring-server:
+  service.running:
+    - enable: True
+    - watch:
+      - file: /etc/init.d/docker-compose-monitoring-server
 
 
 {% for service in salt['pillar.get']('monitoring:server') %}
