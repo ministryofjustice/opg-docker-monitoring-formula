@@ -1,0 +1,12 @@
+{% from "opg-docker-monitoring/map.jinja" import monitoring with context %}
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          docker-compose
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     0 2 3 4 5
+# Default-Stop:
+# Short-Description: Run script at stop time
+# Description:       Enable service provided by daemon.
+### END INIT INFO
+/usr/local/bin/docker-compose -p monitoringclient -f /etc/docker-compose/monitoring-client/docker-compose.yml up -d

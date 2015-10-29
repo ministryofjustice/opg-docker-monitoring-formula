@@ -26,6 +26,25 @@ monitoring-client-docker-compose-yml:
       - sls: docker-compose
 
 
+monitoring-client-init:
+  file.managed:
+    - name: /etc/init.d/docker-compose-monitoring-client
+    - source: salt://opg-docker-monitoring/templates/compose-monitoring-client-init.yml
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 755
+    - require:
+      - sls: docker-compose
+
+
+docker-compose-monitoring-client:
+  service.running:
+    - enable: True
+    - watch:
+      - file: /etc/init.d/docker-compose-monitoring-client
+
+
 monitoring-client-docker-compose-up:
   cmd.run:
     - name: docker-compose -p monitoringclient up -d
