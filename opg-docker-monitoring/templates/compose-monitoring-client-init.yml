@@ -4,9 +4,23 @@
 # Provides:          docker-compose
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
-# Default-Start:     0 2 3 4 5
-# Default-Stop:
-# Short-Description: Run script at stop time
-# Description:       Enable service provided by daemon.
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 6
+# Short-Description: Monitoring Client
+# Description:       Start/stop monitoring client docker container
 ### END INIT INFO
-/usr/local/bin/docker-compose -p monitoringclient -f /etc/docker-compose/monitoring-client/docker-compose.yml up -d
+
+
+case "$1" in
+  start)
+    /usr/local/bin/docker-compose -p monitoringclient -f /etc/docker-compose/monitoring-client/docker-compose.yml up -d
+    ;;
+  stop)
+    /usr/local/bin/docker-compose -p monitoringclient -f /etc/docker-compose/monitoring-client/docker-compose.yml stop
+    /usr/local/bin/docker-compose -p monitoringclient -f /etc/docker-compose/monitoring-client/docker-compose.yml kill
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+esac
