@@ -85,7 +85,7 @@ graphite:
 rabbitmq:
   image: registry.service.dsd.io/opguk/rabbitmq:{{monitoring.version.opg_docker}}
   ports:
-    - 5672:5672
+    - 5671:5671
   env_file: ./rabbitmq.env
 
 
