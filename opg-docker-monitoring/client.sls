@@ -65,7 +65,7 @@ docker-compose-monitoring-client:
       - file: monitoring-client-project-dir
     - require_in:
       - service: docker-compose-monitoring-client
-    - listen_in:
+    - watch_in:
       - service: docker-compose-monitoring-client
 
 {% endif %}
