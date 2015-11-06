@@ -24,6 +24,7 @@ monitoring-client-docker-compose-yml:
     - mode: 644
     - require:
       - sls: docker-compose
+      - file: monitoring-client-project-dir
 
 
 monitoring-client-init:
@@ -42,19 +43,7 @@ docker-compose-monitoring-client:
   service.running:
     - enable: True
     - watch:
-      - file: /etc/init.d/docker-compose-monitoring-client
-
-
-monitoring-client-docker-compose-up:
-  cmd.run:
-    - name: docker-compose -p monitoringclient up -d
-    - cwd: /etc/docker-compose/monitoring-client
-    - shell: /bin/bash
-    - env:
-      - HOME: /root
-    - watch:
-      - file: /etc/docker-compose/*
-    - require:
+      - file: monitoring-client-init
       - file: monitoring-client-docker-compose-yml
 
 
@@ -74,6 +63,8 @@ monitoring-client-docker-compose-up:
     - require:
       - sls: docker-compose
       - file: monitoring-client-project-dir
+    - require_in:
+      - service: docker-compose-monitoring-client
 
 {% endif %}
 {% endfor %}
