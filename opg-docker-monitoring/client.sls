@@ -39,12 +39,26 @@ monitoring-client-init:
       - sls: docker-compose
 
 
+monitoring-client-docker-compose-pull:
+  cmd.run:
+    - name: docker-compose -p monitoringclient pull
+    - cwd: /etc/docker-compose/monitoring-client
+    - shell: /bin/bash
+    - env:
+      - HOME: /root
+    - require:
+      - file: monitoring-client-docker-compose-yml
+
+
 docker-compose-monitoring-client:
   service.running:
     - enable: True
     - watch:
       - file: monitoring-client-init
       - file: monitoring-client-docker-compose-yml
+    - require:
+      - cmd: monitoring-client-docker-compose-pull
+    - order: last
 
 
 {% for service in salt['pillar.get']('monitoring:client') %}
@@ -65,6 +79,7 @@ docker-compose-monitoring-client:
       - file: monitoring-client-project-dir
     - require_in:
       - service: docker-compose-monitoring-client
+      - cmd: monitoring-client-docker-compose-pull
     - watch_in:
       - service: docker-compose-monitoring-client
 
