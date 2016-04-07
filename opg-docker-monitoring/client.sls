@@ -3,7 +3,6 @@
 include:
   - .docker
 
-
 monitoring-client-project-dir:
   file.directory:
     - name: /etc/docker-compose/monitoring-client
@@ -22,15 +21,22 @@ monitoring-client-docker-compose-yml:
     - mode: 644
 
 
-docker-compose-up-monitoringclient:
-  docker_compose.up:
-    - project: monitoringclient
-    - config: /etc/docker-compose/monitoring-client/docker-compose.yml
-    - env:
-      - HOME: /root
-    - watch:
-      - file: /etc/docker-compose/monitoring-client/*
+/etc/init.d/docker-compose-monitoringclient:
+  file.managed:
+    - name: docker-compose-monitoringclient
+    - source: salt://docker-compose/templates/docker-compose-service
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 755
+    - context:
+        service_name: monitoringclient
 
+docker-compose-monitoringclient:
+  service.running:
+    - enable: True
+    - watch:
+      - file: /etc/init.d/docker-compose-monitoringclient
 
 {% for service in salt['pillar.get']('monitoring:client') %}
 {% if 'env' in pillar['monitoring']['client'][service]  %}
@@ -45,6 +51,8 @@ docker-compose-up-monitoringclient:
     - context:
         project: 'client'
         service: {{service}}
+    - watch_in:
+      - service: docker-compose-{{service}}
     - require:
       - file: monitoring-client-project-dir
 
