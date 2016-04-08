@@ -32,22 +32,27 @@ monitoring-server-docker-adhoc-yml:
     - group: root
     - mode: 644
 
-
-docker-compose-up-monitoringserver:
-  docker_compose.up:
-    - project: monitoringserver
-    - config: /etc/docker-compose/monitoring-server/docker-compose.yml
-    - env:
-      - HOME: /root
-    - watch:
-      - file: /etc/docker-compose/monitoring-server/*
+/etc/init.d/docker-compose-monitoringserver:
+  file.managed:
+    - name: docker-compose-monitoringserver
+    - source: salt://docker-compose/templates/docker-compose-service
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 755
+    - context:
+        service_name: monitoringserver
     - require:
       - file: monitoring-server-docker-compose-yml
       - file: grafana-data-dir
       - file: graphite-data-dir
       - file: elasticsearch-data-dir
-    - watch_in:
-      - cmd: flush_monitoring_udp_conntrack
+
+docker-compose-monitoringserver:
+  service.running:
+    - enable: True
+    - watch:
+      - file: /etc/init.d/docker-compose-monitoringserver
 
 
 grafana-data-dir:
