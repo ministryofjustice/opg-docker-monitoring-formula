@@ -63,7 +63,7 @@ logstash:
 
 
 redis:
-  image: redis:latest
+  image: redis:3.0.3
   ports:
     - 6379:6379
   env_file: ./redis.env
