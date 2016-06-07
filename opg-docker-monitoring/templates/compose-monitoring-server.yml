@@ -68,7 +68,7 @@ logstash:
 
 
 redis:
-  image: redis:latest
+  image: redis:3.0.3
   log_driver: syslog
   ports:
     - 6379:6379
