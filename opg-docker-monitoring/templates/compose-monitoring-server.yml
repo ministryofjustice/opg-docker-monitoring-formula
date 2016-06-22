@@ -94,6 +94,7 @@ rabbitmq:
   image: registry.service.dsd.io/opguk/rabbitmq:{{monitoring.version.opg_docker}}
   log_driver: syslog
   ports:
+    - 5671:5671
     - 5672:5672
   env_file: ./rabbitmq.env
 
